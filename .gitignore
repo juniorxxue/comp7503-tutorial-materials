@@ -1,0 +1,15 @@
+.env
+.DS_Store
+**/.DS_Store
+recordings/
+keynote.key
+slides.md
+scripts/manual-demo.sh
+scripts/manual-demo-stepwise.sh
+scripts/record-manual-demo.sh
+scripts/record-manual-demo-stepwise.sh
+scripts/record-manual-demo-slides.sh
+scripts/cleanup-manual-demo.sh
+scripts/add-cast-markers.mjs
+scripts/add-command-markers.mjs
+scripts/add-slide-markers.mjs

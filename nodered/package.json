@@ -1,0 +1,11 @@
+{
+  "name": "tutorial2026-node-red",
+  "private": true,
+  "scripts": {
+    "start": "node $NODE_OPTIONS node_modules/node-red/red.js $FLOWS"
+  },
+  "dependencies": {
+    "node-red-contrib-mongodb3": "2.0.1",
+    "node-red-dashboard": "3.6.6"
+  }
+}

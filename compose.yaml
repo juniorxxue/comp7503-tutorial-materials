@@ -1,0 +1,52 @@
+services:
+  mongodb:
+    build:
+      context: ./mongodb
+      args:
+        MONGO_BASE_IMAGE: ${MONGO_BASE_IMAGE}
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_APP_DATABASE}
+      APP_DB_NAME: ${MONGO_APP_DATABASE}
+      APP_DB_USER: ${MONGO_APP_USERNAME}
+      APP_DB_PASSWORD: ${MONGO_APP_PASSWORD}
+      TZ: ${TZ}
+    ports:
+      - "${MONGO_PORT}:27017"
+    volumes:
+      - mongodb-data:/data/db
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mongosh --quiet --username \"$${MONGO_INITDB_ROOT_USERNAME}\" --password \"$${MONGO_INITDB_ROOT_PASSWORD}\" --authenticationDatabase admin --eval \"quit(db.adminCommand({ ping: 1 }).ok ? 0 : 2)\"",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  node-red:
+    build:
+      context: ./nodered
+      args:
+        NODE_RED_BASE_IMAGE: ${NODE_RED_BASE_IMAGE}
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      TZ: ${TZ}
+      FLOWS: flows.json
+      NODE_RED_CREDENTIAL_SECRET: ${NODE_RED_CREDENTIAL_SECRET}
+      COURSE_MONGODB_URL: mongodb://${MONGO_APP_USERNAME}:${MONGO_APP_PASSWORD}@${MONGO_FLOW_HOST:-mongodb}:27017/${MONGO_APP_DATABASE}?authSource=${MONGO_APP_DATABASE}
+    ports:
+      - "${NODE_RED_PORT}:1880"
+    volumes:
+      - nodered-data:/data
+
+volumes:
+  mongodb-data:
+  nodered-data:
