@@ -7,7 +7,7 @@ This replaces the manual setup flow from `slides.pdf` with a reproducible Docker
 - `compose.yaml`: starts the two services used in the tutorial, `mongodb` and `node-red`, and wires their ports, environment variables, health checks, and named volumes together.
 - `.env.example`: template configuration file that students can copy to `.env` if they want to override defaults such as ports, credentials, timezone, or HKO polling interval.
 - `README.md`: setup and maintenance guide for this repository.
-- `.gitignore`: prevents local-only files and course-authoring artifacts from being committed.
+- `.gitignore`: prevents local-only files from being committed.
 - `HKO.Flow.json`: source copy of the Node-RED demo flow before environment-specific values are rewritten.
 - `mongodb/Dockerfile`: builds the MongoDB image used by the course stack.
 - `mongodb/init/01-create-app-user.sh`: creates the application database user automatically on first MongoDB startup.
@@ -21,16 +21,6 @@ This replaces the manual setup flow from `slides.pdf` with a reproducible Docker
 - `scripts/stop.sh` and `scripts/stop.ps1`: stop the running stack without deleting the named volumes.
 - `scripts/reset.sh` and `scripts/reset.ps1`: stop the stack and remove the named volumes so the environment is recreated from scratch.
 - `scripts/render-flow.sh` and `scripts/render-flow.ps1`: rewrite the MongoDB URI and HKO polling settings into `nodered/flows.json` from `HKO.Flow.json` and `.env`.
-
-## What is intentionally not in this repo
-
-Local-only and authoring-only files are excluded on purpose:
-
-- `.env`: may contain machine-specific or secret values.
-- `.DS_Store`: macOS metadata.
-- `recordings/`: terminal capture outputs for demo production.
-- `keynote.key` and `slides.md`: presentation authoring materials.
-- `scripts/manual-demo*.sh`, `scripts/record-manual-demo*.sh`, `scripts/cleanup-manual-demo.sh`, and the `scripts/add-*-markers.mjs` files: helpers for lecture demo recording rather than student deployment.
 
 ## What it fixes
 
